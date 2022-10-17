@@ -17,9 +17,19 @@ func DialAndCall(caller Caller) error {
 	return client.Call(conn)
 }
 
+func DialToAndCallUnix(srvAddr string, caller Caller) error {
+	conn, err := DialTo(srvAddr, "unix")
+	if nil != err {
+		return err
+	}
+
+	client := &Client{Caller:caller}
+
+	return client.Call(conn)
+}
 
 func DialToAndCall(srvAddr string, caller Caller) error {
-	conn, err := DialTo(srvAddr)
+	conn, err := DialTo(srvAddr, "tcp")
 	if nil != err {
 		return err
 	}

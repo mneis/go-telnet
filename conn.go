@@ -25,19 +25,21 @@ type Conn struct {
 //
 // If a secure connection is desired, use `DialTLS` instead.
 func Dial() (*Conn, error) {
-	return DialTo("")
+	return DialTo("", "tcp")
 }
 
 // DialTo makes a (un-secure) TELNET client connection to the the address specified by
 // 'addr'.
 //
 // If a secure connection is desired, use `DialToTLS` instead.
-func DialTo(addr string) (*Conn, error) {
+func DialTo(addr string, network string) (*Conn, error) {
 
-	const network = "tcp"
+	if (network != "unix") {
+		network = "tcp"
 
-	if "" == addr {
-		addr = "127.0.0.1:telnet"
+		if "" == addr {
+			addr = "127.0.0.1:telnet"
+		}
 	}
 
 	conn, err := net.Dial(network, addr)
